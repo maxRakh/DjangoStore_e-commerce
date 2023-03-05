@@ -1,0 +1,51 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+  <h1>Офоромление заказа</h1>
+  <table class="cart" style="text-align: center;">
+    <thead>
+      <tr>
+        <th>Товар</th>
+        <th>Кол-во</th>
+        <th>Цена за шт</th>
+        <th>Общая стоимость</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+          <tr>
+            <td>{{ item.product.title }}</td>
+            <td>{{ item.quantity }}</td>
+            <td class="num">{{ item.price }} р.</td>
+            <td class="num">{{ item.total_price }} р.</td>
+          </tr>
+      {% endfor %}
+      {% if cart.coupon %}
+        <tr bgcolor="orange">
+          <td>
+            "{{ cart.coupon.code }}" промокод (Скидка {{ cart.coupon.discount }}%)
+          </td>
+          <td colspan="2"></td>
+          <td class="num">
+            - {{ cart.get_discount }} руб.
+          </td>
+        </tr>
+
+      {% endif %}
+        <tr class="total" bgcolor="#c0c0c0">
+          <td >Всего к оплате</td>
+          <td colspan="2"></td>
+          <td style="font-weight:bold" class="num">{{ cart.get_total_price_after_coupon }} р.</td>
+        </tr>
+    </tbody>
+  </table>
+  <br>
+  <form action="#" method="post">
+    {% csrf_token %}
+      {{ form.as_p }}
+    <button type="submit" style="background-color:orange">Оформить заказ</button>
+  </form>
+  <p>
+    <a style="color:orange" href="{% url 'cart_detail' %}" class="button light">Вернуться в корзину</a>
+  </p>
+{% endblock %}

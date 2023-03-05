@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+    <title>{{title}}</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
+
+</head>
+
+<body>
+<div style="padding-top:0px;padding-bottom:0px;background-color:#F7F5FF;font-size: 14px;text-align: center">ОСЕНЬ - ЗИМА 2022 - 2023</div>
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #FFB52E;">
+  <a class="navbar-brand" href="{% url 'store' %}" style="color:#808080">MAZZA.BAGAM</a>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+<li {% if not category %} style="font-weight:bold" {% endif %}>
+<a class="navbar-brand" href="{% url 'store' %}">Вся продукция</a>
+</li>
+{% for c in categories %}
+<li {% if category.slug == c.slug %} style="font-weight:bold" {% endif %}>
+<a class="navbar-brand" href="{{ c.get_absolute_url }}">{{ c.name }}</a>
+</li>
+{% endfor %}
+
+    </ul>
+<div class="form-inline my-2 my-lg-0">
+  <a href="{% url 'cart_detail' %}">
+     <img id="cart-icon" src="{% static 'images/cart.png' %}">
+  </a>
+  <a id="cart-total" href="{% url 'cart_detail' %}">{{ cart.get_total_price }}р.</a>
+</div>
+</div>
+</nav>
+
+<div class="container">
+    <br>
+    {% block content %}
+
+    {% endblock content%}
+</div>
+<br>
+<div style="text-align: center">Все права защищены 2023</div>
+</body>
+</html>

@@ -1,0 +1,26 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+	{% for product in products %}
+		<div class="col-lg-4">
+			{% if product.photo %}
+			<a href="{{ product.get_absolute_url }}"><img class="thumbnail"  src="{{product.photo.url}}"></a>
+			{% endif %}
+			<div class="box-element product">
+				<h6><strong>{{product.title}}</strong></h6>
+				<hr>
+				<a href="{% url 'cart_add' product.id %}" >
+        			{% csrf_token %}
+        			<button type="submit" class="btn btn-outline-secondary add-btn" style="border-color:orange;color:orange;">В корзину</button>
+    			</a>
+				<a class="btn btn-outline-success" style="border-color:orange;color:orange" href="{{ product.get_absolute_url }}">Посмотреть</a>
+				<h4 style="display: inline-block; float: right"><strong>{{product.price}} р.</strong></h4>
+			</div>
+		</div>
+	{% endfor %}
+</div>
+
+{% endblock content%}
+
+<img src="{% static 'images/cart.png' %}">

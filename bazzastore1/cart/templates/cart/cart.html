@@ -1,0 +1,73 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+  <h1>Корзина покупок</h1>
+  <table class="cart" style="text-align: center;">
+    <thead>
+      <tr>
+        <th>Картинка</th>
+        <th>Товар</th>
+        <th>Изменить</th>
+        <th>Удалить</th>
+        <th>Кол-во</th>
+        <th>Цена за шт</th>
+        <th>Общая стоимость</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in cart %}
+        {% with product=item.product %}
+          <tr>
+            <td>
+              <a href="{{ product.get_absolute_url }}">
+                <img style="width:100px;height:150px;" src="{% if product.photo %}{{ product.photo.url }}{% else %}{% static 'img/no_image.png' %}{% endif %}">
+              </a>
+            </td>
+            <td>{{ product.title }}</td>
+            <td>
+              <a style="color:orange" href="{% url 'cart_add' product.id %}">+</a>
+              <a style="color:orange" href="{% url 'cart_reduce' product.id %}">-</a>
+            </td>
+            <td><a style="color:orange" href="{% url 'cart_remove' product.id %}">Удалить</a></td>
+            <td>
+              {{ item.quantity }}
+            </td>
+            <td class="num">{{ item.price }} р.</td>
+            <td class="num">{{ item.total_price }} р.</td>
+          </tr>
+        {% endwith %}
+      {% endfor %}
+      {%if cart.coupon %}
+        <tr class="num">
+          <td>Промежуточный итог</td>
+          <td colspan="5"></td>
+          <td class="num">{{ cart.get_total_price }}</td>
+        </tr>
+        <tr>
+          <td>
+            "{{ cart.coupon.code }}" промокод
+            (Скидка {{ cart.coupon.discount }}%)
+          </td>
+          <td colspan="5"></td>
+          <td class="num">
+            - {{ cart.get_discount }} руб.
+          </td>
+        </tr>
+      {% endif %}
+      <tr class="total">
+        <td >Итого</td>
+        <td colspan="5"></td>
+        <td style="font-weight:bold" class="num">{{ cart.get_total_price_after_coupon }} р.</td>
+      </tr>
+    </tbody>
+  </table>
+  <form action="{% url 'coupon_apply' %}" method="post">
+    {{ coupon_apply_form }}
+    <input type="submit" value="Применить промокод">
+    {% csrf_token %}
+  </form>
+  <p>
+    <a style="color:orange" href="{% url 'store' %}" class="button light">Вернуться в магазин</a>
+    <a style="color:orange; font-weight:bold; margin-left: 25pt" href="{% url 'order' %}" class="button">Перейти к оформлению заказа</a>
+  </p>
+{% endblock %}

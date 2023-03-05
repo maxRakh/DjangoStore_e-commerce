@@ -1,0 +1,21 @@
+{% extends "store/base.html" %}
+{% load static %}
+{% block title %}
+{{ product.title }}
+{% endblock %}
+{% block content %}
+<div class="product-detail">
+<img src="{% if product.photo %}{{ product.photo.url }}{% else %}
+{% static 'images/placeholder.png' %}{% endif %}" style="width:300px;height:450px;">
+<h1>{{ product.title }}</h1>
+<h5>
+<a style="color:orange" href="{{ product.category.get_absolute_url }}">{{product.category }}</a>
+</h5>
+<p style="font-size:22pt" class="price">{{ product.price }} р.</p>
+    <a href="{% url 'cart_add' product.id %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-outline-secondary add-btn" style="border-color:orange;color:orange;">В корзину</button>
+    </a>
+<p>{{ product.description|linebreaks }}</p>
+</div>
+{% endblock %}

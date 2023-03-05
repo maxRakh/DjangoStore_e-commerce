@@ -1,0 +1,8 @@
+{% extends 'store/base.html' %}
+{% load static %}
+{% block content %}
+  <h1>Ваш заказ №<strong>{{ order.id }}</strong> оформлен. С вами свяжется наш менеджер для уточнения условий доставки и оплаты</h1>
+  <p>
+    <a style="color:orange" href="{% url 'store' %}" class="button light">Вернуться в магазин</a>
+  </p>
+{% endblock %}
