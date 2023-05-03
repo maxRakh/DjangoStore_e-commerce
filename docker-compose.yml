@@ -1,0 +1,12 @@
+version: '1.0'
+
+services:
+  django:
+    build:
+      context: .
+    container_name: django
+    command: python bazzastore1/manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/bazzastore1
+    ports:
+      - "8000:8000"
